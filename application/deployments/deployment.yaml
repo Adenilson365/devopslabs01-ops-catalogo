@@ -18,7 +18,7 @@ spec:
     spec:
       containers: 
         - name: catalogo
-          image: adenilsonkon/devopslabs-catalogo:adenilsonkon/devopslabs-catalogo:main-18d754cfc27c99727d096f10210077208e4853a3
+          image: adenilsonkon/devopslabs-catalogo:adenilsonkon/devopslabs-catalogo:main-9d3966e142237f6ff6e23a7d02f1fb2ee761f0ea
           ports:
             - containerPort: 3333
           envFrom:
