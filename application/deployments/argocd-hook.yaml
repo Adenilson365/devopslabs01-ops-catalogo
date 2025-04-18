@@ -18,8 +18,8 @@ spec:
             - |
               curl -s -X POST https://api.telegram.org/bot${TELEGRAM_TOKEN}/sendMessage \
                             -d chat_id=${TELEGRAM_CHAT_ID} \
-                            -d text="✅ Deploy do MS-Catalogo iniciada"
-                            -d text="- Namespace: api"
+                            -d text="✅ Deploy do MS-Catalogo iniciada" \
+                            -d text="- Namespace: api" \
                             -d text="- Ambiente: dev"
           env:
             - name: TELEGRAM_TOKEN
@@ -54,9 +54,10 @@ spec:
             - |
               curl -s -X POST https://api.telegram.org/bot${TELEGRAM_TOKEN}/sendMessage \
                             -d chat_id=${TELEGRAM_CHAT_ID} \
-                            -d text="✅ Deploy de MS-Catalogo Concluído com SUCESSO!"
-                            -d text="- Namespace: api"
+                            -d text="✅ Deploy de MS-Catalogo Concluído com SUCESSO!" \
+                            -d text="- Namespace: api" \
                             -d text="- Ambiente: dev"
+
           env:
             - name: TELEGRAM_TOKEN
               valueFrom:
@@ -90,8 +91,8 @@ spec:
             - |
               curl -s -X POST https://api.telegram.org/bot${TELEGRAM_TOKEN}/sendMessage \
                             -d chat_id=${TELEGRAM_CHAT_ID} \
-                            -d text="❌ Deploy de MS-Catalogo Concluído com FALHAS!"
-                            -d text="- Namespace: api"
+                            -d text="❌ Deploy de MS-Catalogo Concluído com FALHAS!" \
+                            -d text="- Namespace: api" \
                             -d text="- Ambiente: dev"
           env:
             - name: TELEGRAM_TOKEN
