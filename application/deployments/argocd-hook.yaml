@@ -1,0 +1,107 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  generateName: pre-sync-
+  annotations:
+    argocd.argoproj.io/hook: PreSync
+    argocd.argoproj.io/hook-delete-policy: HookSucceeded
+  namespace: api
+spec:
+  template:
+    spec:
+      containers:
+        - name: pre-sync
+          image: curlimages/curl
+          command:
+            - /bin/sh
+            - -c
+            - |
+              curl -s -X POST https://api.telegram.org/bot${TELEGRAM_TOKEN}/sendMessage \
+                            -d chat_id=${TELEGRAM_CHAT_ID} \
+                            -d text="✅ Deploy do MS-Catalogo iniciada"
+                            -d text="- Namespace: api"
+                            -d text="- Ambiente: dev"
+          env:
+            - name: TELEGRAM_TOKEN
+              valueFrom:
+                secretKeyRef:
+                  name: telegram-secret
+                  key: token
+            - name: TELEGRAM_CHAT_ID
+              valueFrom:
+                secretKeyRef:
+                  name: telegram-secret
+                  key: chat_id
+      restartPolicy: Never
+---
+apiVersion: batch/v1
+kind: Job
+metadata:
+  generateName: post-sync-
+  annotations:
+    argocd.argoproj.io/hook: PostSync
+    argocd.argoproj.io/hook-delete-policy: HookSucceeded
+  namespace: api
+spec:
+  template:
+    spec:
+      containers:
+        - name: post-sync
+          image: curlimages/curl
+          command:
+            - /bin/sh
+            - -c
+            - |
+              curl -s -X POST https://api.telegram.org/bot${TELEGRAM_TOKEN}/sendMessage \
+                            -d chat_id=${TELEGRAM_CHAT_ID} \
+                            -d text="✅ Deploy de MS-Catalogo Concluído com SUCESSO!"
+                            -d text="- Namespace: api"
+                            -d text="- Ambiente: dev"
+          env:
+            - name: TELEGRAM_TOKEN
+              valueFrom:
+                secretKeyRef:
+                  name: telegram-secret
+                  key: token
+            - name: TELEGRAM_CHAT_ID
+              valueFrom:
+                secretKeyRef:
+                  name: telegram-secret
+                  key: chat_id
+      restartPolicy: Never
+---
+apiVersion: batch/v1
+kind: Job
+metadata:
+  generateName: sync-fail-
+  annotations:
+    argocd.argoproj.io/hook: SyncFail
+    argocd.argoproj.io/hook-delete-policy: HookSucceeded
+  namespace: api
+spec:
+  template:
+    spec:
+      containers:
+        - name: sync-fail
+          image: curlimages/curl
+          command:
+            - /bin/sh
+            - -c
+            - |
+              curl -s -X POST https://api.telegram.org/bot${TELEGRAM_TOKEN}/sendMessage \
+                            -d chat_id=${TELEGRAM_CHAT_ID} \
+                            -d text="❌ Deploy de MS-Catalogo Concluído com FALHAS!"
+                            -d text="- Namespace: api"
+                            -d text="- Ambiente: dev"
+          env:
+            - name: TELEGRAM_TOKEN
+              valueFrom:
+                secretKeyRef:
+                  name: telegram-secret
+                  key: token
+            - name: TELEGRAM_CHAT_ID
+              valueFrom:
+                secretKeyRef:
+                  name: telegram-secret
+                  key: chat_id
+      restartPolicy: Never
